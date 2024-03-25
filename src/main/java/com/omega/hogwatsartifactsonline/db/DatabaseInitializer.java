@@ -8,9 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
-
 @RequiredArgsConstructor
 @Component
 public class DatabaseInitializer implements CommandLineRunner {
@@ -56,19 +53,19 @@ public class DatabaseInitializer implements CommandLineRunner {
         artifact6.setImageUrl("imageUrl6");
 
         var wizard = new Wizard();
-        wizard.setId("1");
+        wizard.setWizardId(1);
         wizard.setName("harry");
         wizard.addArtifact(artifact1);
         wizard.addArtifact(artifact3);
 
         var wizard2 = new Wizard();
-        wizard2.setId("2");
+        wizard2.setWizardId(2);
         wizard2.setName("Neville Longbottom");
         wizard2.addArtifact(artifact2);
         wizard2.addArtifact(artifact4);
 
         var wizard3 = new Wizard();
-        wizard3.setId("3");
+        wizard3.setWizardId(3);
         wizard3.setName("Albus");
         wizard3.addArtifact(artifact5);
 

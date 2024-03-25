@@ -1,7 +1,6 @@
 package com.omega.hogwatsartifactsonline.artifacts;
 
 import com.omega.hogwatsartifactsonline.dto.ArtifactDto;
-import com.omega.hogwatsartifactsonline.dto.ArtifactUpdateRequest;
 import com.omega.hogwatsartifactsonline.dtomapper.ArtifactDtoMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/v1/artifacts")
+@RequestMapping("${api.endpoint.base-url}/artifacts")
 @RequiredArgsConstructor
 public class ArtifactController {
     private final ArtifactService artifactService;

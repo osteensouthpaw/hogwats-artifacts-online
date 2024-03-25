@@ -1,6 +1,6 @@
 package com.omega.hogwatsartifactsonline.artifacts;
 
-import com.omega.hogwatsartifactsonline.Exceptions.ArtifactNotFoundException;
+import com.omega.hogwatsartifactsonline.Exceptions.ResourceNotFoundException;
 import de.mkammerer.snowflakeid.SnowflakeIdGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class ArtifactService {
 
     public Artifact findById(String id) {
         return artifactRepository.findById(id)
-                .orElseThrow(() -> new ArtifactNotFoundException("artifact not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("artifact not found"));
     }
 
     public List<Artifact> findAll() {
@@ -37,12 +37,12 @@ public class ArtifactService {
 
                     return artifactRepository.save(artifact);
                 })
-                .orElseThrow(() -> new ArtifactNotFoundException("artifact not found %s".formatted(artifactId)));
+                .orElseThrow(() -> new ResourceNotFoundException("artifact not found %s".formatted(artifactId)));
     }
 
     public void deleteArtifactById(String artifactId) {
         artifactRepository.findById(artifactId)
-                        .orElseThrow(() -> new ArtifactNotFoundException("not found"));
+                        .orElseThrow(() -> new ResourceNotFoundException("not found"));
         artifactRepository.deleteById(artifactId);
     }
 }

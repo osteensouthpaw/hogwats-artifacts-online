@@ -11,9 +11,17 @@ public class WizardDtoMapper implements Function<Wizard, WizardDto> {
     @Override
     public WizardDto apply(Wizard wizard) {
         return new WizardDto(
-                wizard.getId(),
+                wizard.getWizardId(),
                 wizard.getName(),
                 wizard.getNumberOfArtifacts()
         );
+    }
+
+    public Wizard apply(WizardDto wizardDto) {
+        var wizard = new Wizard();
+        wizard.setName(wizardDto.name());
+        wizard.setWizardId(wizardDto.wizardId());
+
+        return wizard;
     }
 }

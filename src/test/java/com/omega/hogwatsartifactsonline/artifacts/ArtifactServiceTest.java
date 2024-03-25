@@ -1,6 +1,6 @@
 package com.omega.hogwatsartifactsonline.artifacts;
 
-import com.omega.hogwatsartifactsonline.Exceptions.ArtifactNotFoundException;
+import com.omega.hogwatsartifactsonline.Exceptions.ResourceNotFoundException;
 import com.omega.hogwatsartifactsonline.wizards.Wizard;
 import de.mkammerer.snowflakeid.SnowflakeIdGenerator;
 import org.junit.jupiter.api.AfterEach;
@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -59,7 +58,7 @@ class ArtifactServiceTest {
     void findByIdSuccess() {
         //given(mock data)
         var wizard = new Wizard();
-        wizard.setId("osteen");
+        wizard.setWizardId(1);
         wizard.setName("harry");
 
         var artifact = new Artifact();
@@ -88,7 +87,7 @@ class ArtifactServiceTest {
 
         //then
         assertThat(throwable)
-                .isInstanceOf(ArtifactNotFoundException.class)
+                .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessage("artifact not found");
 
         verify(artifactRepository, times(1)).findById("omega");
@@ -170,7 +169,7 @@ class ArtifactServiceTest {
         given(artifactRepository.findById("1")).willReturn(Optional.empty());
 
         //when
-        assertThrows(ArtifactNotFoundException.class, () -> {
+        assertThrows(ResourceNotFoundException.class, () -> {
             artifactService.updateArtifact("1", artifact);
         });
 
@@ -202,7 +201,7 @@ class ArtifactServiceTest {
     void deleteByIdUnsuccessful() {
         given(artifactRepository.findById("1")).willReturn(Optional.empty());
 
-        assertThrows(ArtifactNotFoundException.class, () -> {
+        assertThrows(ResourceNotFoundException.class, () -> {
             artifactService.deleteArtifactById("1");
         });
 

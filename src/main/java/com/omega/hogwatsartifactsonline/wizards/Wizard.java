@@ -1,10 +1,7 @@
 package com.omega.hogwatsartifactsonline.wizards;
 
 import com.omega.hogwatsartifactsonline.artifacts.Artifact;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Wizard implements Serializable {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int wizardId;
     private String name;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "owner")
@@ -32,5 +30,10 @@ public class Wizard implements Serializable {
 
     public int getNumberOfArtifacts() {
         return artifacts.size();
+    }
+
+    public void unAssignArtifacts() {
+        artifacts.forEach(artifact -> artifact.setOwner(null));
+        artifacts.clear();
     }
 }
