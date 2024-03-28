@@ -4,6 +4,7 @@ import com.omega.hogwatsartifactsonline.dto.WizardDto;
 import com.omega.hogwatsartifactsonline.dtomapper.WizardDtoMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,5 +48,12 @@ public class WizardController {
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable int id) {
         wizardService.deleteWizardById(id);
+    }
+
+    @PutMapping("{wizardId}/artifacts/{artifactId}")
+//    @ResponseStatus(HttpStatus.OK)
+    public void artifactAssignment(@PathVariable int wizardId,
+                                   @PathVariable String artifactId) {
+        wizardService.artifactAssignment(wizardId, artifactId);
     }
 }
