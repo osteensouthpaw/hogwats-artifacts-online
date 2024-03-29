@@ -45,11 +45,16 @@ public class WizardService {
         wizardRepository.deleteById(id);
     }
 
-    public Wizard artifactAssignment(int wizardId, String artifactId) {
-        Wizard wizard = findById(wizardId);
-        Artifact artifact = artifactService.findById(artifactId);
 
+    public void artifactAssignment(int wizardId, String artifactId) {
+        Wizard wizard = wizardRepository.findById(wizardId)
+                .orElseThrow(() -> new ResourceNotFoundException("wizard not found"));
+        Artifact artifact = artifactRepository.findById(artifactId)
+                .orElseThrow(() -> new ResourceNotFoundException("artifact not found"));
+
+        if (artifact.getOwner() != null) {
+            artifact.getOwner().removeArtifact(artifact);
+        }
         wizard.addArtifact(artifact);
-        return wizardRepository.save(wizard);
     }
 }

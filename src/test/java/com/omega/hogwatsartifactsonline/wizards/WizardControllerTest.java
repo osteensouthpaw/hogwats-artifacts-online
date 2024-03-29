@@ -239,4 +239,44 @@ class WizardControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("not found"));
     }
+
+
+    @Test
+    void artifactAssignmentSuccessful() throws Exception {
+        //given
+        doNothing().when(wizardService)
+                .artifactAssignment(2, "1");
+
+        //when and then
+        mockMvc.perform(put("/api/v1/wizards/2/artifacts/1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    void artifactAssignmentUnsuccessfulWithNonExistentWizardId() throws Exception {
+        doThrow(new ResourceNotFoundException("wizard not found"))
+                .when(wizardService)
+                .artifactAssignment(1, "1");
+
+        mockMvc.perform(put("/api/v1/wizards/1/artifacts/1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("wizard not found"));
+    }
+
+
+    @Test
+    void artifactAssignmentUnsuccessfulWithNonExistentArtifactId() throws Exception {
+        doThrow(new ResourceNotFoundException("artifact not found"))
+                .when(wizardService)
+                .artifactAssignment(1, "1");
+
+        mockMvc.perform(put("/api/v1/wizards/1/artifacts/1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("artifact not found"));
+    }
+
 }
