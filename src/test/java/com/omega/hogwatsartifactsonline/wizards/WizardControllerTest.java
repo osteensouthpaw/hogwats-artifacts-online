@@ -217,6 +217,7 @@ class WizardControllerTest {
                 .accept(MediaType.APPLICATION_JSON));
     }
 
+
     @Test
     void deleteByIdSuccessful() throws Exception {
         //given
