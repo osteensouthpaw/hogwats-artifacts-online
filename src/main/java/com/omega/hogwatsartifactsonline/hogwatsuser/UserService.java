@@ -4,6 +4,10 @@ package com.omega.hogwatsartifactsonline.hogwatsuser;
 import com.omega.hogwatsartifactsonline.Exceptions.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +15,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<HogwartsUser> findAll() {
         return this.userRepository.findAll();
@@ -25,7 +30,8 @@ public class UserService {
     }
 
     public HogwartsUser save(HogwartsUser newHogwartsUser) {
-        // We NEED to encode plain password before saving to the DB! TODO
+        String encodedPassword = passwordEncoder.encode(newHogwartsUser.getPassword());
+        newHogwartsUser.setPassword(encodedPassword);
         return this.userRepository.save(newHogwartsUser);
     }
 
@@ -42,5 +48,12 @@ public class UserService {
         this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("user not found"));
         this.userRepository.deleteById(userId);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+                .map(AppUser::new)
+                .orElseThrow(() -> new UsernameNotFoundException("wrong credentials"));
     }
 }

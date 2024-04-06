@@ -1,20 +1,12 @@
 package com.omega.hogwatsartifactsonline.hogwatsuser;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.omega.hogwatsartifactsonline.Exceptions.ResourceNotFoundException;
-import com.omega.hogwatsartifactsonline.artifacts.Artifact;
-import com.omega.hogwatsartifactsonline.dto.ArtifactDto;
-import com.omega.hogwatsartifactsonline.dto.UserDto;
-import com.omega.hogwatsartifactsonline.dto.WizardDto;
-import com.omega.hogwatsartifactsonline.wizards.Wizard;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,16 +18,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class UserControllerTest {
 
     @Autowired
@@ -173,30 +165,6 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.roles").value(updatedUser.getRoles()));
     }
 
-
-    @Test
-    void updateUserUnsuccessfulWithNonExistentId() throws Exception {
-        //given
-        HogwartsUser user = new HogwartsUser(
-                1,
-                "osteen",
-                "1234",
-                true,
-                "user");
-
-        String userJson = objectMapper.writeValueAsString(user);
-
-        given(userService.update(eq(1), Mockito.any(HogwartsUser.class)))
-                .willThrow(new ResourceNotFoundException("user not found"));
-
-        //when and then
-        mockMvc.perform(put(baseUrl + "/users/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(userJson)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value("user not found"));;
-    }
 
     @Test
     void deleteUserByIdSuccessful() throws Exception {

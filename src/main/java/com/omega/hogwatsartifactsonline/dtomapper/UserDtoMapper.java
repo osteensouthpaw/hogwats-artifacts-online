@@ -23,6 +23,7 @@ public class UserDtoMapper implements Function<HogwartsUser, UserDto> {
 
     public HogwartsUser apply(UserDto userDto) {
         HogwartsUser user = new HogwartsUser();
+        user.setUserId(userDto.userId());
         user.setUsername(userDto.username());
         user.setEnabled(userDto.enabled());
         user.setRoles(userDto.roles());

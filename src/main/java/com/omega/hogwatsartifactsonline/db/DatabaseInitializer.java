@@ -4,6 +4,7 @@ import com.omega.hogwatsartifactsonline.artifacts.Artifact;
 import com.omega.hogwatsartifactsonline.artifacts.ArtifactRepository;
 import com.omega.hogwatsartifactsonline.hogwatsuser.HogwartsUser;
 import com.omega.hogwatsartifactsonline.hogwatsuser.UserRepository;
+import com.omega.hogwatsartifactsonline.hogwatsuser.UserService;
 import com.omega.hogwatsartifactsonline.wizards.Wizard;
 import com.omega.hogwatsartifactsonline.wizards.WizardRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class DatabaseInitializer implements CommandLineRunner {
     private final ArtifactRepository artifactRepository;
     private final WizardRepository wizardRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -83,26 +84,26 @@ public class DatabaseInitializer implements CommandLineRunner {
         user1.setUserId(1);
         user1.setUsername("omega");
         user1.setPassword("1234");
-        user1.setEnabled(true);
+        user1.setEnabled(false);
         user1.setRoles("admin");
 
 
         HogwartsUser user2 = new HogwartsUser();
-        user2.setUserId(1);
-        user2.setUsername("omega");
+        user2.setUserId(2);
+        user2.setUsername("osteen");
         user2.setPassword("1234");
         user2.setEnabled(true);
         user2.setRoles("admin");
 
         HogwartsUser user3 = new HogwartsUser();
-        user3.setUserId(1);
-        user3.setUsername("omega");
+        user3.setUserId(3);
+        user3.setUsername("hope");
         user3.setPassword("1234");
         user3.setEnabled(true);
-        user3.setRoles("admin");
+        user3.setRoles("user");
 
-        userRepository.save(user1);
-        userRepository.save(user2);
-        userRepository.save(user3);
+        userService.save(user1);
+        userService.save(user2);
+        userService.save(user3);
     }
 }

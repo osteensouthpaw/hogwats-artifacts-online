@@ -29,9 +29,8 @@ public class ArtifactDtoMapper implements Function<Artifact, ArtifactDto> {
 
     public Artifact apply(ArtifactDto artifactDto) {
         var artifact = new Artifact();
-        artifact.setArtifactId(artifact.getArtifactId());
         artifact.setName(artifactDto.name());
-        artifact.setDescription(artifact.getDescription());
+        artifact.setDescription(artifactDto.description());
         artifact.setImageUrl(artifactDto.imageUrl());
 
         return artifact;
